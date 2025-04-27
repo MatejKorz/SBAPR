@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "demo-app"
+version = "0.1.0"
+description = ""
+authors = ["Matej Korž <536470@muni.cz>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.14"
+pyside6 = "^6.8.0.2"
+numpy = "2.2.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry.scripts]
+demo-app = "demo_app:run"
+
