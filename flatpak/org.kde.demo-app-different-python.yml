@@ -1,0 +1,38 @@
+id: org.kde.demo-app-different
+runtime: org.kde.Platform
+runtime-version: '6.6'
+sdk: org.kde.Sdk
+command: /app/bin/demo-app-different-launcher.sh
+finish-args:
+  - --socket=x11
+  - --share=network
+  - --filesystem=home
+  - --device=dri
+
+modules:
+  - name: python
+    buildsystem: simple
+    build-commands:
+      - ./configure --prefix=/app --program-suffix=3.13 && make -j$(nproc) && make install
+    sources:
+      - type: archive
+        url: https://www.python.org/ftp/python/3.13.0/Python-3.13.0.tar.xz
+        sha256: 086de5882e3cb310d4dca48457522e2e48018ecd43da9cdf827f6a0759efb07d
+
+  - name: demo-app-different
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/bin
+      - cp demo-app-different-launcher.sh /app/bin/
+      - /app/bin/python3.13 -m pip install /run/build/demo-app-different/demo_app-0.1.0-py3-none-any.whl --prefix=/app
+    sources:
+      - type: file
+        path: dist/demo_app-0.1.0-py3-none-any.whl
+      - type: file
+        path: demo-app-different-launcher.sh
+    build-options:
+      env:
+        - FLATPAK_BUILDER: true
+        - NETWORK_ACCESS: true
+      build-args:
+        - --share=network

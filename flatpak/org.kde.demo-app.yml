@@ -1,0 +1,29 @@
+id: org.kde.demo-app
+runtime: org.kde.Platform
+runtime-version: '6.6'
+sdk: org.kde.Sdk
+command: /app/bin/demo-app-launcher.sh
+finish-args:
+  - --socket=x11
+  - --share=network
+  - --filesystem=home
+  - --device=dri
+
+modules:
+  - name: demo-app
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/bin
+      - cp demo-app-launcher.sh /app/bin/
+      - pip install /run/build/demo-app/demo_app-0.1.0-py3-none-any.whl --prefix=/app
+    sources:
+      - type: file
+        path: dist/demo_app-0.1.0-py3-none-any.whl
+      - type: file
+        path: demo-app-launcher.sh
+    build-options:
+      env:
+        - FLATPAK_BUILDER: true
+        - NETWORK_ACCESS: true
+      build-args:
+        - --share=network
