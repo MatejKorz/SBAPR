@@ -1,0 +1,12 @@
+services:
+  test_container:
+    image: debian:testing
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    environment:
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    network_mode: host
+    command: tail -f /dev/null
